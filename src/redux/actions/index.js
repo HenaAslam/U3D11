@@ -2,7 +2,7 @@ export const REMOVE_FROM_FAVOURITE="REMOVE_FROM_FAVOURITE"
 export const ADD_TO_FAVOURITE="ADD_TO_FAVOURITE"
 export const GET_JOBS ="GET_JOBS"
 export const SET_USER_NAME="SET_USER_NAME"
-
+export const GET_COMPANY="GET_COMPANY"
 export  const addtofavouritesAction=(company)=>{
     return{
         
@@ -51,4 +51,27 @@ export const getjobsActionAsync = (query) => {
       }
     }
   }
+
+  export const getCompanyActionAsync = (params) => {
+    return async (dispatch, getState) => {
+      try {
+        const resp = await fetch(
+         ` https://strive-benchmark.herokuapp.com/api/jobs?company=${params}`
+        )
+        if (resp.ok) {
+            const { data } = await resp.json()
+        
+          dispatch({
+            type: GET_COMPANY,
+            payload: data,
+          })
+        } else {
+          console.log('error')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
   
