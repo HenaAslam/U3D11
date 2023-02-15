@@ -1,7 +1,7 @@
 import { SET_USER_NAME } from "../actions"
 
 const initialState={
-    name:''
+    namee:''
 }
 
 const userReducer=(state=initialState,action)=>{
@@ -9,7 +9,7 @@ const userReducer=(state=initialState,action)=>{
         case SET_USER_NAME:
             return{
                 ...state,
-                name:action.payload
+                namee:action.payload
                 
             }
         default:

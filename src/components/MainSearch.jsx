@@ -1,20 +1,29 @@
 import { useState } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Spinner , Alert} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import Job from './Job'
-import { getjobsActionAsync, setusernameaction } from '../redux/actions'
+import { getjobsActionAsync, GET_JOBS,  } from '../redux/actions'
+// setusernameaction
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 const MainSearch = () => {
   const [query, setQuery] = useState('')
   // const [jobs, setJobs] = useState([])
 
 
-  const username=useSelector(state=>state.user.name)
+  //  const username=useSelector(state=>state.user.name)
+  // useEffect(() => {
+  //  // localStorage.clear()
+  //  dispatch({
+  //   type:GET_JOBS,
+  //   payload:[]
+  //  })
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
-
-const [inputValue,setInputvalue]=useState("")
+// const [inputValue,setInputvalue]=useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const jobsFromReduxStore = useSelector((state) => state.job.jobs)
@@ -23,7 +32,9 @@ const [inputValue,setInputvalue]=useState("")
   const handleChange = (e) => {
     setQuery(e.target.value)
   }
+const applicationSpinner=useSelector((state)=>state.job.isLoading)
 
+const applicationError=useSelector((state)=>state.job.isError)
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -44,28 +55,32 @@ const [inputValue,setInputvalue]=useState("")
 
   return (
     <Container>
+{applicationSpinner && <div className='text-center mt-2'><Spinner animation="border" variant="success"/></div>}
+{applicationError && <div className='text-center mt-2'><Alert  variant="danger">Error!</Alert></div>} 
       <Row>
         <Col xs={10} className="mx-auto my-3">
           <h1>Remote Jobs Search</h1>
 
 
 
-{username ? (<><span className='mr-2'>Hello, {username}</span><Button onClick={() => navigate('/favourites')}>Favourites</Button></>) : (
-<Form onSubmit={e=>{
+ 
+{/* {username? (<><span className='mr-2'>Hello, {username}</span> </>) : 
+(<Form onSubmit={e=>{
   e.preventDefault()
   dispatch(setusernameaction(inputValue))
 }}>
   <Form.Group >
   
-    <Form.Control type="text" placeholder="Enter username" className='w-25' value={inputValue} onChange={(e)=>{
-              setInputvalue(e.target.value)
+    <Form.Control type="text" placeholder="Enter username" className='w-25' value={inputValue} disabled={applicationError}  onChange={(e)=>{
+              setInputvalue(e.target.value)  
     }}/>
    
   </Form.Group>
 
   
-</Form>)}
-          
+</Form>)} */}
+ 
+ <Button onClick={() => navigate('/favourites')}>Favourites</Button>
         
         
         
@@ -76,14 +91,17 @@ const [inputValue,setInputvalue]=useState("")
 
 
         <Col xs={10} className="mx-auto">
-          {username?   <Form onSubmit={handleSubmit}>
+          {/* {username?   */}
+           <Form onSubmit={handleSubmit}>
             <Form.Control
               type="search"
               value={query}
               onChange={handleChange}
               placeholder="type and press Enter"
             />
-          </Form> : ""}
+          </Form> 
+          {/* : */}
+           {/* ""} */}
         
         </Col>
         <Col xs={10} className="mx-auto mb-5">
